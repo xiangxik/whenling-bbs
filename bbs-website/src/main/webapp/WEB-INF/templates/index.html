@@ -1,0 +1,45 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout(page_tab='donate')}">
+<head>
+	<title th:text="#{seo.index.title}">首页</title>
+</head>
+
+<body>
+	<div class="row" layout:fragment="content">
+		<div class="col-md-9">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<ul class="nav nav-pills">
+						<li class="active"><a href="/?tab=全部">全部</a></li>
+						<li class="active"><a href="/?tab=全部">全部</a></li>
+						<li class="active"><a href="/?tab=全部">全部</a></li>
+						<li class="dropdown active" style="margin-right: 8px;"><a class="dropdown-toggle" data-toggle="dropdown"
+							href="javascript:void(0)" data-target="#"> 全部 <span class="caret"></span>
+						</a>
+							<ul class="dropdown-menu">
+								<li><a href="/?tab=test">全部</a> <a href="/?tab=test">全部</a> <a href="/?tab=test">全部</a></li>
+							</ul></li>
+					</ul>
+				</div>
+				<div class="panel-body paginate-bot">
+
+					<div th:replace="/components :: topics"></div>
+					<div th:replace="/components :: paginate(${page.number + 1}, ${page.totalPages}, '', '', true)"></div>
+
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 hidden-sm hidden-xs">
+			<th:block th:if="${auth.currentUser} != null">
+				<div th:replace="/components :: user_info"></div>
+				<div th:replace="/components :: create_topic"></div>
+			</th:block>
+			<th:block th:if="${auth.currentUser} == null">
+				<div th:replace="/components :: welcome"></div>
+			</th:block>
+		</div>
+	</div>
+</body>
+</html>

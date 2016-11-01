@@ -1,0 +1,64 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+	<div th:fragment="topics" class="media"></div>
+
+	<div th:fragment="user_info" class="panel panel-default">
+		<div class="panel-heading">个人信息</div>
+		<div class="panel-body">
+			<div class="media">
+				<div class="media-left">
+					<a href="/user/${auth.currentUser.username}"> <img src="${auth.currentUser.avatar!}"
+						title="${auth.currentUser.name!}" class="avatar" />
+					</a>
+				</div>
+				<div class="media-body">
+					<div class="media-heading">
+						<a href="/user/${auth.currentUser.username!}">${auth.currentUser.username!}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:fragment="create_topic" class="panel panel-default">
+		<a href="/topic/create" class="btn btn-default btn-block">发布话题</a>
+	</div>
+
+	<div th:fragment="welcome" class="panel panel-default">
+		<div class="panel-body">
+			<h5>属于Java语言的bbs</h5>
+			<p>在这里，您可以提问，回答，分享，诉说，这是个属于Java程序员的社区，欢迎您的加入！</p>
+		</div>
+	</div>
+
+	<div th:fragment="paginate(currentPage, totalPage, actionUrl, urlParas, showdivide)" th:remove="tag">
+		<th:block th:if="${totalPage}>0">
+			<th:block th:if="${totalPage}>=${currentPage}">
+				<th:block th:if="${showdivide}">
+					<div class="divide mar-top-5" th:if="${totalPage}>1"></div>
+				</th:block>
+				<ul th:class="'pagination pagination-sm'+ (${totalPage}==1?' hidden-xs hidden-sm hidden-md hidden-lg':'')">
+					<th:block th:if="${currentPage}!=1">
+						<li><a href="${actionUrl}?p=1${urlParas!}">&lt;&lt;</a></li>
+						<li><a href="${actionUrl}?p=#{currentPage - 1}${urlParas!}">&lt;</a></li>
+					</th:block>
+
+					<li th:class="${currentPage}==${i}?'active':''"
+						th:each="i : ${#numbers.sequence(currentPage<=3?1:(currentPage-2<1?1:currentPage-2), totalPage-currentPage<2?totalPage:(currentPage+2>totalPage?totalPage:currentPage+2))}">
+						<a th:class="${currentPage}==${i}?'disabled':''" href="${actionUrl}?p=#{i}${urlParas!}">#{i}</a>
+					</li>
+
+					<th:block th:if="${currentPage}==${totalPage}">
+						<li><a href="${actionUrl}?p=#{currentPage + 1}${urlParas!}">&gt;</a></li>
+						<li><a href="${actionUrl}?p=#{totalPage}${urlParas!}">&gt;&gt;</a></li>
+					</th:block>
+				</ul>
+			</th:block>
+		</th:block>
+	</div>
+
+</body>
+</html>
