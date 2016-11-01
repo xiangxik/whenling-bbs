@@ -45,7 +45,7 @@ public class RemoteUserDetailsService implements UserDetailsService {
 				user = userService.findByMobile(username);
 			} else if (Patterns.isEmail(username)) {
 				user = userService.findByEmail(username);
-			} else if (Patterns.isUsername(username)) {
+			} else {
 				user = userService.findByUsername(username);
 			}
 		}

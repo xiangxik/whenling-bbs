@@ -8,17 +8,23 @@
 <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE"></title>
 
 <link rel="icon" href="//tomoya.cn/favicon.ico">
+
 <link rel="stylesheet" th:href="@{/assets/css/bootstrap.css}" />
+<link rel="stylesheet" th:href="@{/assets/vendor/bootstrapvalidator/css/bootstrapValidator.min.css}">
 <link rel="stylesheet" th:href="@{/assets/css/github.css}">
 <link rel="stylesheet" th:href="@{/assets/css/pybbs.css}">
+
 <script src="//cdn.bootcss.com/jquery/2.2.2/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" th:src="@{/assets/vendor/bootstrapvalidator/js/bootstrapValidator.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/vendor/bootstrapvalidator/js/language/zh_CN.js}"></script>
 <script src="//cdn.bootcss.com/layer/2.4/layer.min.js"></script>
+
 </head>
 
 <body>
 	<div class="wrapper">
-		<div th:replace="/common :: header(page_tab)"></div>
+		<div th:replace="/common :: header('')"></div>
 
 		<div class="container">
 			<div layout:fragment="content"></div>
@@ -28,6 +34,7 @@
 	<div th:replace="/common :: footer"></div>
 	
 	<script th:href="@{/assets/js/pybbs.js}"></script>
+	<div layout:fragment="javascript"></div>
 </body>
 
 </html>

@@ -5,7 +5,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,12 +33,9 @@ public class RegisterController {
 
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public Result register(String password, @ModelAttribute User user, BindingResult bindingResult, String mobileCaptcha) {
+	public Result register(String password, @ModelAttribute User user, BindingResult bindingResult) {
 		if (Strings.isNullOrEmpty(password)) {
 			bindingResult.addError(new FieldError("user", "password", "密码不能为空"));
-		}
-		if (Strings.isNullOrEmpty(mobileCaptcha)) {
-			bindingResult.addError(new ObjectError("mobileCaptcha", "短信验证码不能为空"));
 		}
 		if (bindingResult.hasErrors()) {
 			return Result.validateError();
