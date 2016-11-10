@@ -1,0 +1,88 @@
+<!doctype html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<head>
+<title th:text="#{seo.title('话题')}">话题</title>
+<link rel="stylesheet" th:href="@{/assets/libs/editor/editor.css}" />
+</head>
+
+<body>
+	<div class="row" layout:fragment="content">
+		<div class="col-md-9">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a href="/">主页</a> / 话题编辑
+				</div>
+				<div class="panel-body">
+					<form method="post" th:action="/topic/save" id="topicForm">
+						<div class="form-group">
+							<label for="title">标题</label> <input type="text" class="form-control" id="title" name="title"
+								th:value="${topic.title}" placeholder="标题" data-bv-notempty="true" data-bv-notempty-message="请填写标题">
+						</div>
+						<div class="form-group">
+							<label for="content">内容</label>
+							<textarea name="content" id="content" rows="15" class="form-control" th:utext="${topic.content}"></textarea>
+						</div>
+						<div class="form-group">
+							<label for="tab">版块</label> 
+							<select name="tabId" id="tab" class="form-control">
+								
+							</select>
+						</div>
+						<button type="submit" class="btn btn-default">发布</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 hidden-sm hidden-xs">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<b>话题发布指南</b>
+				</div>
+				<div class="panel-body">
+					<p>• 问题标题: 请用准确的语言描述您发布的问题思想</p>
+					<p>• 添加标签: 添加一个或者多个合适的标签, 让您发布的问题得到更多有相同兴趣的人参与.</p>
+					<p>• 给话题选择合适的板块方便查找浏览</p>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript" th:src="@{/assets/libs/webuploader/webuploader.withoutimage.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/libs/markdownit.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/libs/editor/editor.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/libs/editor/ext.js}"></script>
+		
+	</div>
+
+	<script type="text/javascript" th:inline="javascript" layout:fragment="javascript">
+		var base = /*[[${#httpServletRequest.getContextPath()}]]*/"";
+		$(function() {
+			var editor = new Editor({
+				element : $("#content")[0],
+				status : []
+			});
+			editor.render();
+			
+			var formValidator = $("form").bootstrapValidator();
+			formValidator.on('success.form.bv', function(e) {
+				e.preventDefault();
+
+				var $form = $(e.target);
+
+				var bv = $form.data('bootstrapValidator');
+
+				$.post($form.attr("action"), $form.serialize(), function(result) {
+					if (result.success) {
+						$("#tip").hide();
+						location.href = base + "/";
+					} else {
+						$("#tip").text(result.msg).show();
+						$form.bootstrapValidator('disableSubmitButtons', false);
+					}
+				}, "json");
+			});
+		});
+	</script>
+</body>
+</html>
