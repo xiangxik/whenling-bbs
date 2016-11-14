@@ -24,8 +24,8 @@ public class BbsVariable {
 		return tabService.findAll();
 	}
 	
-	public Page<Topic> findPage(Long tabId, Integer page, Integer size) {
+	public Page<Topic> findPage(String tabCode, Integer page, Integer size) {
 		PageRequest pageRequest = new PageRequest(MoreObjects.firstNonNull(page, 0), MoreObjects.firstNonNull(size, 20));
-		return topicService.findByTab(tabId, pageRequest);
+		return topicService.findByTab(tabCode, pageRequest);
 	}
 }

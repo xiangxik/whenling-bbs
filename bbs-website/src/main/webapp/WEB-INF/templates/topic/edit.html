@@ -15,7 +15,7 @@
 					<a href="/">主页</a> / 话题编辑
 				</div>
 				<div class="panel-body">
-					<form method="post" th:action="/topic/save" id="topicForm">
+					<form method="post" th:action="@{/topic/save}" id="topicForm">
 						<div class="form-group">
 							<label for="title">标题</label> <input type="text" class="form-control" id="title" name="title"
 								th:value="${topic.title}" placeholder="标题" data-bv-notempty="true" data-bv-notempty-message="请填写标题">
@@ -26,9 +26,9 @@
 						</div>
 						<div class="form-group">
 							<label for="tab">版块</label> 
-							<select name="tab" id="tab" class="form-control">
+							<select name="tab.id" id="tabId" class="form-control" data-bv-notempty="true" data-bv-notempty-message="请填写版块">
 				              <option value="">选择版块</option>
-				              <option th:each="tab : ${bbs.tabs}" th:value="${tab.id}" th:text="${tab.name}" th:selected="${#strings.toString(tab.id)==#strings.toString(param.tab)}"></option>
+				              <option th:each="tab : ${bbs.getTabs()}" th:value="${tab.id}" th:text="${tab.name}" th:selected="${#strings.toString(tab.id)==#strings.toString(param['tab.id'])}"></option>
 				            </select>
 						</div>
 						<button type="submit" class="btn btn-default">发布</button>

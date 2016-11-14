@@ -3,7 +3,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <body>
 
-	<div th:fragment="topics" class="media"></div>
+	<div th:fragment="topics" class="media">
+		<th:block th:each="topic,iterStat : ${page.content}">
+			<div class="media">
+		    <div class="media-left">
+		      <a th:href="@{/user/}+${topic.publisher.username}" th:text="${topic.publisher.name}">
+		      	<img th:src="${topic.publisher.avatar}" class="avatar" alt="">
+		      </a>
+		    </div>
+		    <div class="media-body">
+		      <div class="title">
+		        <a th:href="@{/topic/}+${topic.id}" th:text="${topic.title}"></a>
+		      </div>
+		      <p class="gray">
+		          <span th:if="${topic.stick}" class="label label-primary">置顶</span>
+		          <span th:if="${topic.good}" class="label label-success">精华</span>
+		          <a th:href="@{/?tab=}+${topic.tab.code}" th:text="${topic.tab.name}"></a>
+		        <span>•</span>
+		        <span><a th:href="@{/user/}+${topic.publisher.username}" th:text="${topic.publisher.name}"></a></span>
+		        <span class="hidden-sm hidden-xs">•</span>
+		        <span class="hidden-sm hidden-xs" th:text="${topic.replyCount}+'个回复'"></span>
+		        <span class="hidden-sm hidden-xs">•</span>
+		        <span class="hidden-sm hidden-xs" th:text="${topic.viewCount}+'次浏览'"></span>
+		        <span>•</span>
+		        <span th:text="${#dates.format(topic.publishedDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+		      </p>
+		    </div>
+		  </div>
+		  <div th:if="${!iterStat.last}" class="divide mar-top-5"></div>
+		</th:block>
+	</div>
 
 	<div th:fragment="user_info" class="panel panel-default">
 		<div class="panel-heading">个人信息</div>
@@ -41,19 +70,19 @@
 					<div class="divide mar-top-5" th:if="${totalPage}>1"></div>
 				</th:block>
 				<ul th:class="'pagination pagination-sm'+ (${totalPage}==1?' hidden-xs hidden-sm hidden-md hidden-lg':'')">
-					<th:block th:if="${currentPage}!=1">
-						<li><a th:href="${actionUrl}?p=1${urlParas!}">&lt;&lt;</a></li>
-						<li><a th:href="${actionUrl}?p=#{currentPage - 1}${urlParas!}">&lt;</a></li>
+					<th:block th:if="${currentPage}>1">
+						<li><a th:href="${actionUrl}+'?page=1'+${urlParas}">&lt;&lt;</a></li>
+						<li><a th:href="${actionUrl}+'?page='+${currentPage-1}+${urlParas}">&lt;</a></li>
 					</th:block>
 
 					<li th:class="${currentPage}==${i}?'active':''"
 						th:each="i : ${#numbers.sequence(currentPage<=3?1:(currentPage-2<1?1:currentPage-2), totalPage-currentPage<2?totalPage:(currentPage+2>totalPage?totalPage:currentPage+2))}">
-						<a th:class="${currentPage}==${i}?'disabled':''" th:href="${actionUrl}?p=#{i}${urlParas!}">#{i}</a>
+						<a th:class="${currentPage}==${i}?'disabled':''" th:href="${actionUrl}+'?page='+${i}+${urlParas}" th:text="${i}"></a>
 					</li>
 
-					<th:block th:if="${currentPage}==${totalPage}">
-						<li><a th:href="${actionUrl}?p=#{currentPage + 1}${urlParas!}">&gt;</a></li>
-						<li><a th:href="${actionUrl}?p=#{totalPage}${urlParas!}">&gt;&gt;</a></li>
+					<th:block th:if="${currentPage}<${totalPage}">
+						<li><a th:href="${actionUrl}+'?page='+${currentPage+1}+${urlParas}">&gt;</a></li>
+						<li><a th:href="${actionUrl}+'?page='+${totalPage}+${urlParas}">&gt;&gt;</a></li>
 					</th:block>
 				</ul>
 			</th:block>
